@@ -1,0 +1,25 @@
+{
+    "name": "dmocho/updater",
+    "description": "Provides attachment of active user ID to create/update/delete operations.",
+    "keywords": ["database", "laravel"],
+    "license": "MIT", 
+    "authors": [
+        {
+            "name": "Paweł Dmochowski",
+            "email": "pawel@dmochowski.co"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "~4"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Dmocho\\Updater": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
