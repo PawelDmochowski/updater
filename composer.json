@@ -1,5 +1,5 @@
 {
-    "name": "dmocho/updater",
+    "name": "PawelDmochowski/Updater",
     "description": "Provides attachment of active user ID to create/update/delete operations.",
     "keywords": ["database", "laravel"],
     "license": "MIT", 
