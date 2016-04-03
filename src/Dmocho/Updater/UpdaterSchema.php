@@ -4,7 +4,7 @@ namespace Dmocho\Updater;
 
 use Illuminate\Support\Facades\Facade;
 
-class Schema extends Facade
+class UpdaterSchema extends Facade
 {
     /**
      * Get a schema builder instance for a connection.
