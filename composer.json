@@ -21,6 +21,5 @@
         "psr-0": {
             "Dmocho\\Updater": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }

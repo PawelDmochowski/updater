@@ -6,16 +6,16 @@ class UpdaterBlueprint extends \Illuminate\Database\Schema\Blueprint
 {
     public function authors()
     {
-        $this->integer('created_by')->unsigned()->nullable();
-        $this->integer('updated_by')->unsigned()->nullable();
+        $this->integer(config('updater.blueprint.created_by'))->unsigned()->nullable();
+        $this->integer(config('updater.blueprint.updated_by'))->unsigned()->nullable();
 
-        $this->foreign('created_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
-        $this->foreign('updated_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
+        $this->foreign(config('updater.blueprint.created_by'))->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
+        $this->foreign(config('updater.blueprint.updated_by'))->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
     }
 
     public function softDeleters()
     {
-        $this->integer('deleted_by')->unsigned()->nullable();
-        $this->foreign('deleted_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
+        $this->integer(config('updater.blueprint.deleted_by'))->unsigned()->nullable();
+        $this->foreign(config('updater.blueprint.deleted_by'))->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
     }
 }

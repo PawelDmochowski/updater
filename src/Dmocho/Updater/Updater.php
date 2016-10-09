@@ -5,7 +5,11 @@ namespace Dmocho\Updater;
 
 use Auth;
 
-trait UpdaterTrait {
+trait Updater {
+
+    static $CREATED_BY = 'created_by';
+    static $UPDATED_BY = 'updated_by';
+    static $DELETED_BY = 'deleted_by';
 
     protected static function bootUpdater()
     {
@@ -15,14 +19,14 @@ trait UpdaterTrait {
          * */ 
         static::creating(function($model) {
             if (Auth::user()) {
-                $model->created_by = Auth::user()->id;
-                $model->updated_by = Auth::user()->id;
+                $model->{config('updater.blueprint.created_by')} = Auth::user()->id;
+                $model->{config('updater.blueprint.updated_by')} = Auth::user()->id;
             }
         });
  
         static::updating(function($model)  {
             if (Auth::user()) {
-                $model->updated_by = Auth::user()->id;
+                $model->{config('updater.blueprint.updated_by')} = Auth::user()->id;
             }
         });
         /*
@@ -30,8 +34,8 @@ trait UpdaterTrait {
          * deletes we need to save the model first with the deleted_by field
          * */
         static::deleting(function($model)  {
-            if (Auth::user() && isset($model->deleted_by)) {
-                $model->deleted_by = Auth::user()->id;
+            if (Auth::user() && isset($model->{config('updater.blueprint.deleted_by')})) {
+                $model->{config('updater.blueprint.deleted_by')} = Auth::user()->id;
                 $model->save();
             }
         });
@@ -42,15 +46,15 @@ trait UpdaterTrait {
      */
     public function createdBy()
     {
-        return $this->belongsTo('App\User', 'created_by');
+        return $this->belongsTo(config('updater.model.created_by'), config('updater.blueprint.created_by'));
     }
 
     /**
-     * Get responsible the user that modified the object.
+     * Get responsible the user that updated the object.
      */
-    public function modifiedBy()
+    public function updatedBy()
     {
-        return $this->belongsTo('App\User', 'created_by');
+        return $this->belongsTo(config('updater.model.updated_by'), config('updater.blueprint.updated_by'));
     }
 
     /**
@@ -58,6 +62,6 @@ trait UpdaterTrait {
      */
     public function deletedBy()
     {
-        return $this->belongsTo('App\User', 'deleted_by');
+        return $this->belongsTo(config('updater.model.deleted_by'), config('updater.blueprint.deleted_by'));
     }
 }
