@@ -4,6 +4,7 @@
 namespace Dmocho\Updater;
 
 use Auth;
+use Request;
 
 trait Updater {
 
@@ -19,14 +20,24 @@ trait Updater {
          * */ 
         static::creating(function($model) {
             if (Auth::user()) {
-                $model->{config('updater.blueprint.created_by')} = Auth::user()->id;
-                $model->{config('updater.blueprint.updated_by')} = Auth::user()->id;
+                $user = Auth::user();
+            } elseif (Request::user()) {
+                $user = Request::user();
+            }
+            if (isset($user)) {
+                $model->{config('updater.blueprint.created_by')} = $user->id;
+                $model->{config('updater.blueprint.updated_by')} = $user->id;
             }
         });
  
         static::updating(function($model)  {
             if (Auth::user()) {
-                $model->{config('updater.blueprint.updated_by')} = Auth::user()->id;
+                $user = Auth::user();
+            } elseif (Request::user()) {
+                $user = Request::user();
+            }
+            if (isset($user)) {
+                $model->{config('updater.blueprint.updated_by')} = $user->id;
             }
         });
         /*
@@ -34,8 +45,13 @@ trait Updater {
          * deletes we need to save the model first with the deleted_by field
          * */
         static::deleting(function($model)  {
-            if (Auth::user() && isset($model->{config('updater.blueprint.deleted_by')})) {
-                $model->{config('updater.blueprint.deleted_by')} = Auth::user()->id;
+            if (Auth::user()) {
+                $user = Auth::user();
+            } elseif (Request::user()) {
+                $user = Request::user();
+            }
+            if (isset($user) && isset($model->{config('updater.blueprint.deleted_by')})) {
+                $model->{config('updater.blueprint.deleted_by')} = $user->id;
                 $model->save();
             }
         });
